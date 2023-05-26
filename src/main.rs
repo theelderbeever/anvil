@@ -1,5 +1,7 @@
 use clap::Parser;
-use sha3::Digest;
+use sha3::{
+    Digest, Keccak224, Keccak256, Keccak384, Keccak512, Sha3_224, Sha3_256, Sha3_384, Sha3_512,
+};
 use std::io::{self, Read};
 
 fn print_version() -> &'static str {
@@ -8,7 +10,7 @@ fn print_version() -> &'static str {
 
 #[derive(Debug, Parser)]
 #[command(name = "sha3")]
-#[command(version = print_version(), about = "Sha3 hashing cli.", long_about = None)]
+#[command(version = print_version(), about = "Sha3 hashing cli.\n\n❯ echo -n 'some text' | sha3cli sha256\n802a5a961895b3f8c6556e31d0960a5778d7135be7d04bbbadd5e406c4bac381\n\n❯ sha3 sha256 'some text'\nn802a5a961895b3f8c6556e31d0960a5778d7135be7d04bbbadd5e406c4bac381", arg_required_else_help = true,)]
 struct Sha3 {
     #[arg()]
     method: Sha3Methods,
@@ -41,30 +43,16 @@ fn main() {
 
     let bytes = value.as_bytes();
 
-    match args.method {
-        Sha3Methods::Sha224 => {
-            println!("{:x}", sha3::Sha3_224::digest(bytes))
-        }
-        Sha3Methods::Sha256 => {
-            println!("{:x}", sha3::Sha3_256::digest(bytes))
-        }
-        Sha3Methods::Sha384 => {
-            println!("{:x}", sha3::Sha3_384::digest(bytes))
-        }
-        Sha3Methods::Sha512 => {
-            println!("{:x}", sha3::Sha3_512::digest(bytes))
-        }
-        Sha3Methods::Keccak224 => {
-            println!("{:x}", sha3::Keccak224::digest(bytes))
-        }
-        Sha3Methods::Keccak256 => {
-            println!("{:x}", sha3::Keccak256::digest(bytes))
-        }
-        Sha3Methods::Keccak384 => {
-            println!("{:x}", sha3::Keccak384::digest(bytes))
-        }
-        Sha3Methods::Keccak512 => {
-            println!("{:x}", sha3::Keccak512::digest(bytes))
-        }
+    let hash = match args.method {
+        Sha3Methods::Sha224 => format!("{:x}", Sha3_224::digest(bytes)),
+        Sha3Methods::Sha256 => format!("{:x}", Sha3_256::digest(bytes)),
+        Sha3Methods::Sha384 => format!("{:x}", Sha3_384::digest(bytes)),
+        Sha3Methods::Sha512 => format!("{:x}", Sha3_512::digest(bytes)),
+        Sha3Methods::Keccak224 => format!("{:x}", Keccak224::digest(bytes)),
+        Sha3Methods::Keccak256 => format!("{:x}", Keccak256::digest(bytes)),
+        Sha3Methods::Keccak384 => format!("{:x}", Keccak384::digest(bytes)),
+        Sha3Methods::Keccak512 => format!("{:x}", Keccak512::digest(bytes)),
     };
+
+    println!("{hash}");
 }
