@@ -1,8 +1,9 @@
 use clap::Parser;
+use colored::Colorize;
 use sha3::{
     Digest, Keccak224, Keccak256, Keccak384, Keccak512, Sha3_224, Sha3_256, Sha3_384, Sha3_512,
 };
-use std::io::{self, Read};
+use std::io::{self};
 
 fn print_version() -> &'static str {
     Box::leak(format!("v{}", env!("CARGO_PKG_VERSION")).into())
@@ -35,8 +36,13 @@ fn main() {
     let value = match args.value {
         Some(v) => v,
         None => {
+            if atty::is(atty::Stream::Stdin) {
+                let err = "ERROR".bold().red();
+                eprintln!("{err}: Missing argument <VALUE>");
+                return;
+            }
             let mut buffer = String::new();
-            io::stdin().read_to_string(&mut buffer).unwrap();
+            io::stdin().read_line(&mut buffer).unwrap();
             buffer
         }
     };
