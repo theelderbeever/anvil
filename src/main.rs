@@ -23,6 +23,7 @@ struct Russet {
 enum RussetMethods {
     Md5,
     Crc32,
+    Blake3,
     Sha224,
     Sha256,
     Sha384,
@@ -54,6 +55,7 @@ fn main() {
     let hash = match args.method {
         RussetMethods::Md5 => format!("{:x}", md5::compute(bytes)),
         RussetMethods::Crc32 => format!("{:x}", crc32fast::hash(bytes)),
+        RussetMethods::Blake3 => format!("{}", blake3::hash(bytes)),
         RussetMethods::Sha224 => format!("{:x}", Sha3_224::digest(bytes)),
         RussetMethods::Sha256 => format!("{:x}", Sha3_256::digest(bytes)),
         RussetMethods::Sha384 => format!("{:x}", Sha3_384::digest(bytes)),
