@@ -17,7 +17,7 @@ n802a5a961895b3f8c6556e31d0960a5778d7135be7d04bbbadd5e406c4bac381
 Usage: russet <METHOD> [VALUE]
 
 Arguments:
-  <METHOD>  [possible values: crc32, sha224, sha256, sha384, sha512, keccak224, keccak256, keccak384, keccak512]
+  <METHOD>  [possible values: md5, crc32, sha224, sha256, sha384, sha512, keccak224, keccak256, keccak384, keccak512]
   [VALUE]   The string value to hash. Can also be piped to stdin.
 
 Options:

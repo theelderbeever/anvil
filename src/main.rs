@@ -21,6 +21,7 @@ struct Russet {
 
 #[derive(Debug, Clone, clap::ValueEnum)]
 enum RussetMethods {
+    Md5,
     Crc32,
     Sha224,
     Sha256,
@@ -51,6 +52,7 @@ fn main() {
     let bytes = value.as_bytes();
 
     let hash = match args.method {
+        RussetMethods::Md5 => format!("{:x}", md5::compute(bytes)),
         RussetMethods::Crc32 => format!("{:x}", crc32fast::hash(bytes)),
         RussetMethods::Sha224 => format!("{:x}", Sha3_224::digest(bytes)),
         RussetMethods::Sha256 => format!("{:x}", Sha3_256::digest(bytes)),
